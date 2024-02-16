@@ -11,16 +11,17 @@ ScalarConverter::ScalarConverter(ScalarConverter const &other)
 }
 void ScalarConverter::storType(std::string str)
 {
-    int i = 0;
+    size_t i = 0;
+
     if (std::isdigit(str[i]))
     {
-        while (str[i] < str.length())
+        while (i <= str.length())
         {
             if (std::isdigit(str[i]) == 0)
             {
-                if (str[i] != 'f')
+                if (str[i] != 'f' && std::isalpha(str[i]))
                     throw ConverterExeption();
-                else if (str[i] != 'f' && (i + 1) < str.length())
+                else if (str[i] == 'f' && (i + 1) < str.length())
                     throw ConverterExeption();
             }
             i++;
@@ -41,15 +42,17 @@ ScalarConverter &ScalarConverter::operator=(ScalarConverter const &other)
 {
     str = other.str;
     type = other.type;
-    inttype = other.type;
-    doubltype = other.type;
+    inttype = other.inttype;
+    doubltype = other.doubltype;
+    fltype= other.fltype;
+
     storType(str);
     return *this;
 }
 ScalarConverter::ScalarConverter(char *str)
 {
     this->str = str;
-
+    storType( this->str);
 }
 ScalarConverter::~ScalarConverter()
 {
@@ -63,8 +66,8 @@ const char *ScalarConverter::ConverterExeption::what() const throw()
 {
     return "impossible";
 }
-// void ScalarConverter::setStr(char *str)
-// {
-//     this->str(str);
-// }
+void ScalarConverter::setStr(std::string str)
+{
+    this->str(str);
+}
 
