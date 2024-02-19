@@ -1,15 +1,42 @@
 #include "Conversion.hpp"
+#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
 
 ScalarConverter::ScalarConverter()
 {
-
 }
-ScalarConverter::ScalarConverter(ScalarConverter const &other)
+// ScalarConverter::ScalarConverter(ScalarConverter const &other)
+// {
+//     *this = other;
+// }
+void ScalarConverter::doubleOrfloat(std::string str, char *iftd)
 {
+    size_t i;
+    int cmp;
 
-    *this = other;
+    i = 0;
+    cmp = 0;
+    if (str.length() == 0)
+        throw ConverterExeption();
+    while (i < str.length())
+    {
+        if (str[i] != 'f' && std::isdigit(str[i]) == 0 && str[i] != '.')
+            throw ConverterExeption();
+        else if (str[i] == 'f' && (i + 1) < str.length())
+            throw ConverterExeption();
+        else if (str[i] == '.')
+            cmp++;
+        i++;
+    }
+    if (str[i - 1] == 'f')
+    {
+        *iftd = 'f';
+    }
+    else
+        *iftd = 'd';
 }
-void ScalarConverter::storType(std::string str)
+void ScalarConverter::storType(std::string str, char *iftd)
 {
     size_t i = 0;
 
@@ -19,55 +46,166 @@ void ScalarConverter::storType(std::string str)
         {
             if (std::isdigit(str[i]) == 0)
             {
-                if (str[i] != 'f' && std::isalpha(str[i]))
-                    throw ConverterExeption();
-                else if (str[i] == 'f' && (i + 1) < str.length())
+                if (str[i] == '.')
+                {
+                    doubleOrfloat(str, iftd);
+                    return ;
+                }
+                if (std::isdigit(str[i]))
                     throw ConverterExeption();
             }
             i++;
         }
-        
-    }
-    else if (std::isalpha(str[i]))
-    {
-        if (str.length() != 1)
-            throw ConverterExeption();
+        *iftd = 'i';
     }
     else
     {
-        throw ConverterExeption();
+        if (str.length() != 1 && str != "-inf" && str != "+inf" && str != "nanf" && str != "nan")
+            throw ConverterExeption();
+        *iftd = 'c';
     }
 }
-ScalarConverter &ScalarConverter::operator=(ScalarConverter const &other)
-{
-    str = other.str;
-    type = other.type;
-    inttype = other.inttype;
-    doubltype = other.doubltype;
-    fltype= other.fltype;
-
-    storType(str);
-    return *this;
-}
+// ScalarConverter &ScalarConverter::operator=(ScalarConverter const &other)
+// {
+//     std::string str1 = str;
+//     // storType( this->str);
+//     convert(str1);
+//     return *this;
+// }
 ScalarConverter::ScalarConverter(char *str)
 {
-    this->str = str;
-    storType( this->str);
+    std::string str1 = str;
+    convert(str1);
 }
 ScalarConverter::~ScalarConverter()
 {
 }
+
+void ScalarConverter::printfChar(std::string str)
+{
+    int i = 0;
+
+    if (str.length() != 1)
+    {
+        std::cout << "char: impossible"<<std::endl;
+        std::cout << "int: impossible"<<std::endl;
+        if (str == "nan" || str == "nanf")
+        {
+            std::cout << "float: "<<"nanf"<<std::endl;
+            std::cout << "double: "<<"nan"<<std::endl;
+        }
+        else if (str == "-inf" || str == "+inf")
+        {
+            std::cout << "float: "<<str<<std::endl;
+            std::cout << "double: "<<str<<std::endl;
+        }
+        return ;
+    }
+    else if ((str[i] >= 0 && str[i] <= 31) || str[i] == 127)
+        std::cout << "char: Non displayable"<< std::endl;
+    else if (str[i] >31 && str[i] < 127)
+        std::cout << "char: '" <<str << "'"<<std::endl;
+    else 
+        std::cout << "char: impossible"<<std::endl;
+    std::cout << "int: "<<(int)str[i]<<std::endl;
+    std::cout << "float: "<<(int)str[i]<<".0f"<<std::endl;
+    std::cout << "double: "<<(int)str[i]<<".0"<<std::endl;
+}
+void ScalarConverter::printInt(std::string str)
+{
+    int integer = std::atoi(str.c_str());
+    if ((integer >= 0 && integer <= 31) || integer == 127)
+        std::cout << "char: Non displayable"<< std::endl;
+    else if (integer >31 && integer < 127)
+        std::cout << "char: '" <<(char)integer<< "'"<<std::endl;
+    else
+        std::cout << "char: impossible"<<std::endl;
+    std::cout << "int: "<<integer<<std::endl;
+    std::cout << "float: "<<integer<<".0f"<<std::endl;
+    std::cout << "double: "<<integer<<".0"<<std::endl;
+}
+void ScalarConverter::printfFloat(std::string str)
+{
+    float integer = std::stof(str);
+    int d = round(integer );
+
+    if (((int)integer >= 0 && (int)integer <= 31) || (int)integer == 127)
+        std::cout << "char: Non displayable"<< std::endl;
+    else if ((int)integer > 31 && (int)integer < 127)
+        std::cout << "char: '" <<(char)integer<< "'"<<std::endl;
+    else
+        std::cout << "char: impossible"<<std::endl;
+    if (integer <= 2147483647 && integer >= -2147483648)
+        std::cout << "int: "<<(int)integer<<std::endl;
+    else
+        std::cout << "int: impossible"<<std::endl;
+    if (d != integer)
+    {
+        std::cout << "float: "<<integer<<"f"<<std::endl;
+        std::cout << "double: "<<integer<<std::endl;
+    }
+    else
+    {
+        std::cout << "float: "<<integer<<".0f"<<std::endl;
+        std::cout << "double: "<<integer<<".0"<<std::endl;
+    }
+}
+
+void ScalarConverter::printDouble(std::string str)
+{
+    double integer = std::stof(str);
+    int d = round(integer);
+    if (((int)integer >= 0 && (int)integer <= 31) || (int)integer == 127)
+        std::cout << "char: Non displayable"<< std::endl;
+    else if ((int)integer > 31 && (int)integer < 127)
+        std::cout << "char: '" <<(char)integer<< "'"<<std::endl;
+    else
+        std::cout << "char: impossible"<<std::endl;
+    if (integer <= 2147483647 && integer >= -2147483648)
+        std::cout << "int: "<<(int)integer<<std::endl;
+    else
+        std::cout << "int: impossible"<<std::endl;
+    if (d != integer)
+    {
+        std::cout << "float: "<<integer<<"f"<<std::endl;
+        std::cout << "double: "<<integer<<std::endl;
+    }
+    else
+    {
+        std::cout << "float: "<<integer<<".0f"<<std::endl;
+        std::cout << "double: "<<integer<<".0"<<std::endl;
+    }
+}
 void ScalarConverter::convert(std::string str)
 {
-    (void) str;
+    char iftd;
+    ScalarConverter conv;
+    conv.storType(str, &iftd);
+    switch (iftd)
+    {
+        case 'i':
+        {
+            conv.printInt(str);
+            break;
+        }
+        case 'f':
+        {
+            conv.printfFloat(str);
+            break;
+        }
+        case 'c':
+        {
+            conv.printfChar(str);
+            break;
+        }
+        case 'd':
+            conv.printDouble(str);
+        default:
+            break;
+    }
 }
 
 const char *ScalarConverter::ConverterExeption::what() const throw()
 {
     return "impossible";
 }
-void ScalarConverter::setStr(std::string str)
-{
-    this->str(str);
-}
-
