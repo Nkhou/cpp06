@@ -107,9 +107,9 @@ void ScalarConverter::printfChar(std::string str)
         std::cout << "char: '" <<str << "'"<<std::endl;
     else 
         std::cout << "char: impossible"<<std::endl;
-    std::cout << "int: "<<(int)str[i]<<std::endl;
-    std::cout << "float: "<<(int)str[i]<<".0f"<<std::endl;
-    std::cout << "double: "<<(int)str[i]<<".0"<<std::endl;
+    std::cout << "int: "<<static_cast<int>(str[i])<<std::endl;
+    std::cout << "float: "<<static_cast<float>(str[i])<<".0f"<<std::endl;
+    std::cout << "double: "<<static_cast<double>(str[i])<<".0"<<std::endl;
 }
 void ScalarConverter::printInt(std::string str)
 {
@@ -117,7 +117,7 @@ void ScalarConverter::printInt(std::string str)
     if ((integer >= 0 && integer <= 31) || integer == 127)
         std::cout << "char: Non displayable"<< std::endl;
     else if (integer >31 && integer < 127)
-        std::cout << "char: '" <<(char)integer<< "'"<<std::endl;
+        std::cout << "char: '" <<static_cast<char>(integer)<< "'"<<std::endl;
     else
         std::cout << "char: impossible"<<std::endl;
     std::cout << "int: "<<integer<<std::endl;
@@ -129,14 +129,14 @@ void ScalarConverter::printfFloat(std::string str)
     float integer = std::stof(str);
     int d = round(integer );
 
-    if (((int)integer >= 0 && (int)integer <= 31) || (int)integer == 127)
+    if ((static_cast<int>(integer) >= 0 && static_cast<int>(integer) <= 31) || static_cast<int>(integer) == 127)
         std::cout << "char: Non displayable"<< std::endl;
-    else if ((int)integer > 31 && (int)integer < 127)
+    else if (static_cast<int>(integer) > 31 && static_cast<int>(integer) < 127)
         std::cout << "char: '" <<(char)integer<< "'"<<std::endl;
     else
         std::cout << "char: impossible"<<std::endl;
     if (integer <= 2147483647 && integer >= -2147483648)
-        std::cout << "int: "<<(int)integer<<std::endl;
+        std::cout << "int: "<<static_cast<int>(integer)<<std::endl;
     else
         std::cout << "int: impossible"<<std::endl;
     if (d != integer)
@@ -155,14 +155,14 @@ void ScalarConverter::printDouble(std::string str)
 {
     double integer = std::stof(str);
     int d = round(integer);
-    if (((int)integer >= 0 && (int)integer <= 31) || (int)integer == 127)
+    if ((static_cast<int>(integer) >= 0 && static_cast<int>(integer) <= 31) || static_cast<int>(integer) == 127)
         std::cout << "char: Non displayable"<< std::endl;
-    else if ((int)integer > 31 && (int)integer < 127)
-        std::cout << "char: '" <<(char)integer<< "'"<<std::endl;
+    else if (static_cast<int>(integer) > 31 && static_cast<int>(integer) < 127)
+        std::cout << "char: '" <<static_cast<char>(integer)<< "'"<<std::endl;
     else
         std::cout << "char: impossible"<<std::endl;
     if (integer <= 2147483647 && integer >= -2147483648)
-        std::cout << "int: "<<(int)integer<<std::endl;
+        std::cout << "int: "<<static_cast<int>(integer)<<std::endl;
     else
         std::cout << "int: impossible"<<std::endl;
     if (d != integer)
