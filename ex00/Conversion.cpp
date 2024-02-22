@@ -6,10 +6,10 @@
 ScalarConverter::ScalarConverter()
 {
 }
-// ScalarConverter::ScalarConverter(ScalarConverter const &other)
-// {
-//     *this = other;
-// }
+ScalarConverter::ScalarConverter(ScalarConverter const &other)
+{
+    *this = other;
+}
 void ScalarConverter::doubleOrfloat(std::string str, char *iftd)
 {
     size_t i;
@@ -65,16 +65,14 @@ void ScalarConverter::storType(std::string str, char *iftd)
         *iftd = 'c';
     }
 }
-// ScalarConverter &ScalarConverter::operator=(ScalarConverter const &other)
-// {
-//     std::string str1 = str;
-//     // storType( this->str);
-//     convert(str1);
-//     return *this;
-// }
+ScalarConverter &ScalarConverter::operator=(ScalarConverter const &other)
+{
+    (void)other;
+    return *this;
+}
 ScalarConverter::ScalarConverter(char *str)
 {
-    std::string str1 = str;
+    std::string str1 = static_cast<std::string>(str);
     convert(str1);
 }
 ScalarConverter::~ScalarConverter()

@@ -8,19 +8,12 @@ class ScalarConverter
 {
     private:
         ScalarConverter();
-    //     std::string str;
-    //     char iftd;
-    //     char type;
-    //     int inttype;
-    //     float fltype;
-    //     double doubltype;
+        ScalarConverter(ScalarConverter const &other);
+        ScalarConverter &operator=(ScalarConverter const &other);
     public:
-        // void setStr(char *str);
         ScalarConverter(char *str);
-        ScalarConverter(ScalarConverter const &src);
         ~ScalarConverter();
         void storType(std::string str, char *iftd);
-        ScalarConverter &operator=(ScalarConverter const &src);
         static void convert(std::string str);
         void doubleOrfloat(std::string str, char *iftd);
         void printInt(std::string str);
