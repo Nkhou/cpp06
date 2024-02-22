@@ -1,17 +1,13 @@
 #include "Serializer.hpp"
 
-int main(int argc, char *argv[])
+int main()
 {
-    (void)argv;
-    (void)argc;
-    // if (argc != 2)
-    //     return (1);
-    Serializer Serializer;
     Data data;
     data.a = 7;
     data.b = 10;
-    uintptr_t ptr = Serializer.serialize(&data);
-    Data *ptr2 = Serializer.deserialize(ptr);
+    Serializer Serializer(Data);
+    uintptr_t ptr = Serializer::serialize(&data);
+    Data *ptr2 = Serializer::deserialize(ptr);
     ptr2++;
     std::cout << "a: " << ptr2 << std::endl;
     std::cout << "a: " << ptr2->a << std::endl;
