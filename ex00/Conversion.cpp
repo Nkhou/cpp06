@@ -119,8 +119,8 @@ void ScalarConverter::printInt(std::string str)
     else
         std::cout << "char: impossible"<<std::endl;
     std::cout << "int: "<<integer<<std::endl;
-    std::cout << "float: "<<integer<<".0f"<<std::endl;
-    std::cout << "double: "<<integer<<".0"<<std::endl;
+    std::cout << "float: "<<static_cast<float>(integer)<<".0f"<<std::endl;
+    std::cout << "double: "<<static_cast<double>(integer)<<".0"<<std::endl;
 }
 void ScalarConverter::printfFloat(std::string str)
 {
@@ -140,18 +140,18 @@ void ScalarConverter::printfFloat(std::string str)
     if (d != integer)
     {
         std::cout << "float: "<<integer<<"f"<<std::endl;
-        std::cout << "double: "<<integer<<std::endl;
+        std::cout << "double: "<<static_cast<double>(integer)<<std::endl;
     }
     else
     {
         std::cout << "float: "<<integer<<".0f"<<std::endl;
-        std::cout << "double: "<<integer<<".0"<<std::endl;
+        std::cout << "double: "<<static_cast<double>(integer)<<".0"<<std::endl;
     }
 }
 
 void ScalarConverter::printDouble(std::string str)
 {
-    double integer = std::stof(str);
+    double integer = std::stod(str);
     int d = round(integer);
     if ((static_cast<int>(integer) >= 0 && static_cast<int>(integer) <= 31) || static_cast<int>(integer) == 127)
         std::cout << "char: Non displayable"<< std::endl;
@@ -165,12 +165,12 @@ void ScalarConverter::printDouble(std::string str)
         std::cout << "int: impossible"<<std::endl;
     if (d != integer)
     {
-        std::cout << "float: "<<integer<<"f"<<std::endl;
+        std::cout << "float: "<<static_cast<float>(integer)<<"f"<<std::endl;
         std::cout << "double: "<<integer<<std::endl;
     }
     else
     {
-        std::cout << "float: "<<integer<<".0f"<<std::endl;
+        std::cout << "float: "<<static_cast<float>(integer)<<".0f"<<std::endl;
         std::cout << "double: "<<integer<<".0"<<std::endl;
     }
 }
